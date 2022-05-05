@@ -9,17 +9,15 @@
 
 namespace nbop::glecs
 {
-    class Entity
+    class Entity : public std::enable_shared_from_this<Entity>
     {
     public:
         Entity();
-        Entity(const Entity& other);
-        Entity(Entity&& other);
-
-        Entity& operator=(const Entity& other);
-        Entity& operator=(Entity&& other);
-        
         ~Entity();
+
+        // Preventing copy (and as a side effect, move)
+        Entity(const Entity& other) = delete;
+        Entity& operator=(const Entity& other) = delete;
 
         template<typename T>
         std::weak_ptr<T> addComponent();
@@ -39,7 +37,7 @@ namespace nbop::glecs
     template<typename T>
     std::weak_ptr<T> Entity::addComponent()
     {
-        std::shared_ptr<T> new_component = std::make_shared<T>(this);
+        std::shared_ptr<T> new_component = std::make_shared<T>(weak_from_this());
         m_components.emplace(T::Type, new_component);
         return new_component;
     }

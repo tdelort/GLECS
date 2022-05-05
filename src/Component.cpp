@@ -2,9 +2,8 @@
 
 namespace nbop::glecs
 {
-    Component::Component(const Entity& owner) : m_owner(owner) { }
-
-    const Entity& Component::GetOwner() const { return m_owner; }
-
+    Component::Component(std::weak_ptr<Entity> owner) : m_owner(owner) { }
     Component::~Component() { }
+
+    std::weak_ptr<Entity> Component::GetOwner() const { return m_owner; }
 }

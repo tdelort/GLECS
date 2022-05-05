@@ -15,3 +15,9 @@ Most classes will be found in the `nbop::glecs` namespace.
 ## Concessions
 
 Since it will mostly used with OpenGL, I will use `glm` structures and functions to represent vectors, matrices, etc, instead of implementing them myself.
+
+## Misc
+
+Some informations I ALWAYS ask myself and I don't want to forget:
+
+With `glm` matrices being in column-major order, in `C = B * A`, A is "applied first", then B.
