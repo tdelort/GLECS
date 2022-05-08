@@ -1,24 +1,25 @@
 #include <string_view>
 #include <memory>
+#include <algorithm>
+#include <iterator>
 
 #include <Entity.h>
 #include <Component.h>
 
 namespace nbop::glecs
 {
-    Entity::Entity() { }
+    Entity::Entity(const std::string& name) : m_name(name) { }
     Entity::~Entity() { }
 
-    std::weak_ptr<Component> Entity::getComponent(std::string_view type_str) const
+    std::weak_ptr<Component> Entity::getComponentIf(std::function<bool(std::shared_ptr<Component>)> predicate) const
     {
-        // unordered_map::find : avg O(1), worst O(n)
-        auto it = m_components.find(std::string{type_str}); 
-        if (it == m_components.end())
-        {
-            return {}; // returns empty weak_ptr
-        }
-
-        return it->second;
+        return *(std::find_if(m_components.begin(), m_components.end(), predicate));
     }
 
+    std::vector<std::weak_ptr<Component>> Entity::getAllComponentsIf(std::function<bool(std::shared_ptr<Component>)> predicate) const
+    {
+        std::vector<std::weak_ptr<Component>> result;
+        std::copy_if(m_components.begin(), m_components.end(), std::back_inserter(result), predicate);
+        return result;
+    }
 }

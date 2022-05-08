@@ -16,28 +16,32 @@ namespace nbop::glecs
 
         Transform(std::weak_ptr<Entity> owner);
         ~Transform() override;
+        Transform(const Transform& other) = delete;
+        Transform& operator=(const Transform& other) = delete;
 
         // Transform between spaces
-        glm::mat4 GetLocalToWorldMatrix() const;
-        glm::mat4 GetWorldToLocalMatrix() const;
+        glm::mat4 getLocalToWorldMatrix() const;
+        glm::mat4 getWorldToLocalMatrix() const;
 
         // Getters
-        glm::vec3 GetPosition() const;
+        glm::vec3 getPosition() const;
 
-        glm::vec3 GetRotation() const;
+        glm::vec3 getRotation() const;
 
-        glm::vec3 GetScale() const;
+        glm::vec3 getScale() const;
 
-        std::weak_ptr<Transform> GetParent() const;
+        std::weak_ptr<Transform> getParent() const;
+
+        glm::mat4 getModelMatrix() const;
 
         // Setters
-        void SetPosition(glm::vec3 position);
+        void setPosition(glm::vec3 position);
 
-        void SetRotationEuler(glm::vec3 rotation);
+        void setRotationEuler(glm::vec3 rotation);
 
-        void SetScale(glm::vec3 scale);
+        void setScale(glm::vec3 scale);
 
-        void SetParent(std::weak_ptr<Transform> parent);
+        void setParent(std::weak_ptr<Transform> parent);
 
         // TODO : add helper functions to move, rotate, scale, etc.
         // for example : Translate / RotateAround
